@@ -1,9 +1,9 @@
 int16_t  x1, y1;
 	uint16_t w, h;
 
-	title_x = 17;
-	title_y = 13;
-	title_line_h = 10;
+	title_x = 16;
+	title_y = 19;
+	title_line_h = 17;
 
 	price_rect_x = 42;
 	price_rect_y = 65;
@@ -16,7 +16,7 @@ int16_t  x1, y1;
 	{
 		bg_color = GxEPD_WHITE;
 		fg_color = GxEPD_BLACK;
-		title_bg_color = GxEPD_RED;
+		title_bg_color = GxEPD_BLACK;
 		title_fg_color = GxEPD_WHITE;
 	}
 	/*else if (dpt_bgnd == BACKGROUND_RED)
@@ -33,11 +33,11 @@ int16_t  x1, y1;
 	draw_barcode(&dpt.upc[0], strlen(&dpt.upc[0]), 50, 87, 25, fg_color, bg_color);
 
 	/*Title*/
-	display.setFont(&Roboto_Black_12);
+	display.setFont(&Roboto_Black_20);
 	display.setTextColor(title_fg_color);
 	display.fillRect(0, 0, title_w, display.height(), title_bg_color);
 
-	display_title_vertical("DISCONTINUED");
+	display_title_vertical("REGULAR");
 
 	/*Product name*/
 	//Line 1
