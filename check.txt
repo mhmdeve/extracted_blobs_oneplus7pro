@@ -1,91 +1,102 @@
-int16_t  x1, y1;
-	uint16_t w, h;
+.class public Lcom/oneplus/sound/tuner/DolbyApplication;
+.super Landroid/app/Application;
+.source "DolbyApplication.java"
 
-	title_x = 16;
-	title_y = 19;
-	title_line_h = 17;
 
-	price_rect_x = 42;
-	price_rect_y = 65;
-	price_rect_h = 63;
-	price_y = 77;
+# static fields
+.field public static mApplication:Landroid/app/Application; = null
 
-	uint16_t bg_color, fg_color, title_bg_color, title_fg_color;
+.field private static sBugMode:Z = false
 
-	//if (dpt_bgnd == BACKGROUND_WHITE)
-	{
-		bg_color = GxEPD_WHITE;
-		fg_color = GxEPD_BLACK;
-		title_bg_color = GxEPD_BLACK;
-		title_fg_color = GxEPD_WHITE;
-	}
-	/*else if (dpt_bgnd == BACKGROUND_RED)
-	{
-		bg_color = GxEPD_RED;//GxEPD_BLACK
-		fg_color = GxEPD_WHITE;
-		title_bg_color = GxEPD_BLACK;
-		title_fg_color = GxEPD_WHITE;
-	}*/
 
-	display.fillScreen(bg_color);
-	display.setTextColor(fg_color);
-	//draw_barcode(&dpt.upc[0], strlen(&dpt.upc[0]), 100, 37, 25, fg_color, bg_color);
-	draw_barcode(&dpt.upc[0], strlen(&dpt.upc[0]), 50, 87, 25, fg_color, bg_color);
+# direct methods
+.method static constructor <clinit>()V
+    .locals 0
 
-	/*Title*/
-	display.setFont(&Roboto_Black_20);
-	display.setTextColor(title_fg_color);
-	display.fillRect(0, 0, title_w, display.height(), title_bg_color);
+    return-void
+.end method
 
-	display_title_vertical("REGULAR");
+.method public constructor <init>()V
+    .locals 0
 
-	/*Product name*/
-	//Line 1
-	display.setFont(&cambriab10pt7b);
-	display.setTextColor(fg_color);
-	display.getTextBounds(stringL1, pname_x, pname_y, &x1, &y1, &pname_w, &pname_h);
-	//display.fillRect(x1, y1, pname_w, pname_h, GxEPD_WHITE);//GxEPD_BLACK
-	display.setCursor(pname_x + (PROD_NAME_WINDOW_WIDTH_PX - pname_w) / 2, pname_y);
-	//char str_len = CHARS_IN_A_NAME_ROW - string.length();
-	display.println(stringL1);
+    .line 17
+    invoke-direct {p0}, Landroid/app/Application;-><init>()V
 
-	//Line 2
-	display.getTextBounds(stringL2, pname_x2, pname_y2, &x1, &y1, &pname_w, &pname_h);
-	//display.fillRect(x1, y1, pname_w, pname_h, GxEPD_WHITE);//GxEPD_BLACK
-	display.setCursor(pname_x2 + (PROD_NAME_WINDOW_WIDTH_PX - pname_w) / 2, pname_y2);
-	display.println(stringL2);
-	//display.println(prod_name);
+    return-void
+.end method
 
-	/*Price*/
-	//price_rect_color = GxEPD_BLACK;
-	/*display.drawRect(price_rect_x, price_rect_y, price_rect_w, price_rect_h, price_rect_color);
-	display.drawRect(price_rect_x + 1, price_rect_y + 1, price_rect_w - 2, price_rect_h - 2, price_rect_color);
-	display.drawRect(price_rect_x + 2, price_rect_y + 2, price_rect_w - 4, price_rect_h - 4, price_rect_color);
-	*/
-	display.setFont(&NiagraSolid20pt7b);
-	display.setCursor(58, 68);
-	display.println('$');
-	//display.fillRect(price_x, price_y - price_h + 5, price_w, price_h, GxEPD_WHITE);//GxEPD_BLACK
-	display.setFont(&Roboto_Medium_36);
-	display.setCursor(price_x, price_y/*246*/);
-	//display.println("91.3");
-	display.println(dpt.price);
+.method private initDebugMode()V
+    .locals 1
 
-	/*display.setFont(&Roboto_Light_40);
-	display.setCursor(380, 280);
-	display.println("$");*/
+    const-string p0, "persist.sys.assert.panic"
 
-	/*Expiry date*/
-	display.setFont(&Roboto_Light_Bold_10);
-	display.setCursor(date_x, date_y);
-	//display.fillRect(520, 356, 110, 20, GxEPD_BLACK);
-	//display.fillRect(date_x, date_y, date_w, date_h, GxEPD_WHITE);
-	//display.println("10-28-2037");
-	display.println(dpt.expiration_date);
+    .line 41
+    invoke-static {p0}, Lcom/oneplus/compat/os/SystemPropertiesNative;->get(Ljava/lang/String;)Ljava/lang/String;
 
-	/*Quantity*/
-	display.setFont(&Roboto_Medium_9);
-	display.setCursor(quantity_x, quantity_y);
-	//display.fillRect(16, 313, 100, 20, GxEPD_WHITE);
-	//display.println("2 Litters Each");
-	display.println(dpt.quantity);
+    move-result-object p0
+
+    const-string v0, "true"
+
+    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result p0
+
+    sput-boolean p0, Lcom/oneplus/sound/tuner/DolbyApplication;->sBugMode:Z
+
+    return-void
+.end method
+
+.method public static isDebugMode()Z
+    .locals 1
+
+    .line 45
+    sget-boolean v0, Lcom/oneplus/sound/tuner/DolbyApplication;->sBugMode:Z
+
+    return v0
+.end method
+
+.method private startSoundTunerService()V
+    .locals 2
+
+    .line 33
+    new-instance v0, Landroid/content/Intent;
+
+    const-class v1, Lcom/oneplus/sound/tuner/SoundTunerService;
+
+    invoke-direct {v0, p0, v1}, Landroid/content/Intent;-><init>(Landroid/content/Context;Ljava/lang/Class;)V
+
+    .line 34
+    invoke-virtual {p0}, Lcom/oneplus/sound/tuner/DolbyApplication;->getApplicationContext()Landroid/content/Context;
+
+    move-result-object p0
+
+    sget v1, Lcom/oneplus/compat/os/UserHandleNative;->USER_CURRENT:I
+
+    invoke-static {v1}, Lcom/oneplus/compat/os/UserHandleNative;->of(I)Landroid/os/UserHandle;
+
+    move-result-object v1
+
+    invoke-static {p0, v0, v1}, Lcom/oneplus/compat/content/ContextNative;->startServiceAsUser(Landroid/content/Context;Landroid/content/Intent;Landroid/os/UserHandle;)Landroid/content/ComponentName;
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public onCreate()V
+    .locals 0
+
+    .line 25
+    invoke-super {p0}, Landroid/app/Application;->onCreate()V
+
+    .line 26
+    sput-object p0, Lcom/oneplus/sound/tuner/DolbyApplication;->mApplication:Landroid/app/Application;
+
+    .line 27
+    invoke-direct {p0}, Lcom/oneplus/sound/tuner/DolbyApplication;->startSoundTunerService()V
+
+    .line 29
+    invoke-direct {p0}, Lcom/oneplus/sound/tuner/DolbyApplication;->initDebugMode()V
+
+    return-void
+.end method
